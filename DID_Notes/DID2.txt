@@ -1,0 +1,128 @@
+
+History of Present lliness
+
+Chuck is a kind and pleasant 74 y.o. M who is presenting for a general follow up appointment. His primary concern for the visit is learning more about the new COVID variants and in the case he tests positive, what the next steps should be (e.g., Paxlovid).
+
+Patient denies any acute complaints or recent symptoms. He recently had a sore throat after the holidays and tested negative. He gained 4 Ibs over the holidays (220 --> 224 Ibs) and aims to lose weight by daily tracking, portion controlling his food, and exercising 30 min a day on the treadmill. He tried the Noom app but stopped because he did not want to pay for it.
+
+Patient describes his mood as "good" and is experiencing minor stress and anxiety due to his work in the financial market. His also concerned for his brother who recently moved to Hawaii and is having trouble with his significant other. Patient also complains of insomnia where he wakes up at 3-4 AM after 5-6 hours of sleep. He does not want this medically managed.
+
+Patient BP has improved and he has been compliant with his medications. Patient denies tobacco and drug use but drinks 2 oz. of bourbon every couple days.
+
+ROS negative for nausea/vomiting, fever, chills, shortness of breath, dysuria, hematuria, orthostatic changes, new skin lesions, and memory loss. Patient one episode of headache a couple months ago and an episode of epistaxis 3 weeks ago prompting him to stop his aspirin use (he resumed last week).
+
+Past Medical History
+- Basal cell carcinoma of skin (173.91) (C44.91)
+Encounter for screening for malignant neoplasm of prostate (V76.44) (212.5)
+. High risk medication use (V58.69) (279.899)
+- Hyperlipidemia (272 4) (E78.5)
+Hypertension (401.9) (110)
+Hypogonadism male (257.2) (E29.1)
+- Male erectile disorder of organic origin (607.84) (N52.9)
+. Nephrolithiasis (592.0) (N20.0)
+
+
+Surgical History
+1. Denied: History of Complete Colonoscopy
+
+2. History of Percutaneous Lithotomy
+
+Family History
+
+Problems
+1. Family history of Alzheimer Disease : Father
+2. Family history of Breast Cancer (V16.3) : Mother
+3. Family history of Cancer
+4. Family history of Coronary Artery Disease (V17.49) : Maternal Grandfather
+5. Denied: Family history of Diabetes Mellitus
+6. Family history of Hyperlipidemia
+7. Family history of Hypertension (V17.49)
+
+Social History
+
+* Denied: History of Current Smoker
+* Exercise Frequency (Times/Week)
+* He walks daily. swim after work at home.
+* Marital History - Currently Married
+* Never a smoker
+* Never smoked
+* Sports Activities Golf
+* Denied: History of Using Cocaine
+* Denied: History of Using Marijuana
+
+Allergies
+
+1. Augmentin TABS
+
+Current Meds
+
+1. Flomax 0.4 MG Oral Capsule; TAKE 1 CAPSULE Daily;
+Therapy: 05Nov2019 to Recorded
+
+2. Nasacort Allergy 24HR 55 MCG/ACT Nasal Aerosol; 1 spray BID prn;
+Therapy: 12Jun2012 to (Evaluate:19Mar2017) Requested for: 22Jun2016; Last
+Rx:22Jun2016 Ordered
+
+3. Atorvastatin Calcium 20 MG Oral Tablet; TAKE 1 TABLET BY MOUTH DAILY AS
+DIRECTED;
+Therapy: 12Jun2012 to (Evaluate:23Apr2023) Requested for: 27Jul2022; Last
+Rx:27Jul2022 Ordered
+
+4. Aspirin 81 81 MG Oral Tablet Delayed Release; one po qd;
+Therapy: 20May2020 to (Last Rx:20May2020) Ordered
+
+5. hydroCHLOROthiazide 12.5 MG Oral Tablet; TAKE 1 TABLET BY MOUTH EVERY DAY.
+CONTINUE TO GET REFILLS;
+Therapy: 07Apr2014 to (Evaluate:260ct2023) Requested for: 310ct2022; Last
+Rx:310ct2022 Ordered
+
+6. Ramipril 10 MG Oral Capsule; TAKE 1 CAPSULE BY MOUTH EVERY DAY FOR HIGH
+BLOOD PRESSURE;
+Therapy: 12Jun2012 to (Evaluate:03Mar2023) Requested for; 08M: H
+Rx:08Mar2022 Ordered ) Rea FOBMer202z; Last
+
+7. Testosterone GEL; topical 100 mg/mi apply 1/2 ml (50mg) daily;
+Therapy: (Recorded:13May201 9) to Recorded
+
+8. Sildenafil Citrate 50 MG Oral Tablet; TAKE 1 TABLET DAILY 1 HOUR BEFORE NEEDED;
+Therapy: 28Mar2018 to (Evaluate:250ct2022) Requested for: 28Apr2022; Last
+Rx:28Apr2022 Ordered
+
+9. School / Work Release; pt has OSA and needs CPAP at 10 cm water pressure with a
+heated humidifier;
+Therapy: 12Jul2021 to (Last Rx:12Jul2021) Ordered
+
+Physical Exam
+
+Constitutional: alert, in no acute distress and healthy appearing.
+Eyes: the sclera and conjunctiva were normal, pupils were equal in size, round, reactive to light, with normal accommodation and extraocular movements were intact.
+
+ENT: the ears and nose were normal in appearance.
+Neck: the appearance of the neck was normal, no neck mass was observed, the thyroid was not enlarged and the neck was supple. There was no jugular-venous distention.
+
+Pulmonary: normal respiratory rhythm and effort and clear bilateral breath sounds. . )
+Heart: heart rate and rhythm were normal, normal $1 and S2, no gallops, no murmurs and no pericardial rub.
+
+Abdomen: non-tender, no abdominal mass palpated and no hernia was discovered.
+
+Assessment
+~ Encounter for preventive health examination (V70.0) (Z00.00)
+Benign enlargement of prostate (600.00) (N40.0)
+Hyperlipidemia (272.4) (E78.5)
+. Obstructive sleep apnea (327.23) (G47.33)
+. Major depression, single episode (296.20) (F32.9)
+Insomnia (780.52) (G47.00)
+. Hypertension (401.9) (110)
+
+Complex renal cyst (753.10) (N28.1)
+
+Basal cell carcinoma of skin (173.91) (C44.91)
+. Obese (278.00) (E66.9)
+
+Encounter for wellness examination in adult (V70.0) (Z00.00)
+
+
+Plan
+Hyperlipidemia
+1. COMP METABOLIC PANEL w/eGFR 10231; Status:Active; Requested for.01May2023;
+2. Lipid Panel 7600; Status:Active; Requested for:01May2023;
