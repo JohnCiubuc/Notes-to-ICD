@@ -13,6 +13,9 @@ import configparser
 import hashlib, hmac
 from datetime import datetime, timezone
 
+import boto3
+
+
 class AWSRest:
     _accessKey=''
     _secretKey=''
@@ -24,7 +27,7 @@ class AWSRest:
         config.read(os.path.expanduser("~") + '/.aws/credentials')
         self._accessKey = config.get('default','aws_access_key_id') 
         self._secretKey = config.get('default','aws_secret_access_key') 
-        self.requestAWS('comprehend', 'POST', '/v1/comprehend', 0, 0)
+        self.requestAWS('comprehendmedical', 'POST', '/v1/DetectEntitiesV2', 0, 0)
     
     def getSignatureKey(self, key, datestamp, region, service):
         kDate = hmac.HMAC(datestamp.encode(), ('AWS4' + key).encode(), digestmod=hashlib.sha512).hexdigest()
@@ -59,7 +62,7 @@ class AWSRest:
         signing_key = self.getSignatureKey(self._secretKey, datestamp, self._region, service);
         signature = hmac.HMAC(string_to_sign.encode(), signing_key.encode(), digestmod=hashlib.sha512).hexdigest()
         canonical_querystring += "&X-Amz-Signature=" + signature;
-        response = requests.get(endpoint + "?" + canonical_querystring);
+        response = requests.post(endpoint + "?" + canonical_querystring);
         if(response.ok):
         
             # Loading the response data into a dict variable
@@ -70,4 +73,4 @@ class AWSRest:
           # If response code is not ok (200), print the resulting http error code with description
             response.raise_for_status()
             
-AWS = AWSRest()
+# AWS = AWSRest()
