@@ -44,7 +44,7 @@ for section in note_sections:
         note_section_indexes.append(note_section_indexes[-1] + len(section))
     else: 
         note_section_indexes.append(len(section))
-
+note_section_indexes.append(len(note))
 
 # Request entities
 if DEBUG_USE_PICKLE:
@@ -60,6 +60,24 @@ else:
 file = open('aws_response.pkl', 'wb')
 pickle.dump(response, file)
 file.close()
+
+entity_sections = {}
+# Reformat entities per section
+for entity in entities:
+    begin_offset = entity['BeginOffset']
+    for name,index in enumerate(note_section_indexes):
+        print(name)
+        if begin_offset > index:
+            continue
+        else:
+            section_name = clip_sections[name][0]
+            if section_name in entity_sections:
+                entity_sections[section_name].append(entity)
+            else:
+                entity_sections[section_name] = [entity]
+            break
+            
+            
 
 # for entity in a:
 #     print('Entity', entity)
