@@ -7,11 +7,8 @@ Created on Thu Jan 12 17:12:09 2023
 """
 # from pymedtermino import *
 from pymedtermino.snomedct import SNOMEDCT
-from pymedtermino.icd10 import ICD10
-SNOMEDCT_DIR = "/home/jiba/telechargements/base_med/SnomedCT_Release_INT_20130731"
-SNOMEDCT_CORE_FILE = "/home/jiba/telechargements/base_med/SNOMEDCT_CORE_SUBSET_201308.txt"
-ICD10_DIR = "/home/jiba/telechargements/base_med/icd10"
-CIM10_DIR = "/home/jiba/telechargements/base_med/cim10"
+from pymedtermino.icd10 import ICD10,ICD10Concept
+
 
 # a=SNOMEDCT.search('insomnia')
 
@@ -19,4 +16,10 @@ def search(text):
     return SNOMEDCT.search(text)
 
 def getICD(snomedCode):
-    return ICD10[snomedCode]
+    return ICD10.search(snomedCode)
+
+# b = getICD('insomnia')
+# print(b)
+# getICD(8943002)
+# a=ICD10.search('weight gain')
+# b=ICD10Concept(8943002)
