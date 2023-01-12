@@ -79,6 +79,8 @@ for entity in entities:
     
 debug = []
 for ents in entity_sections['Reason For Visit']:
+    # print(ents['Text'])
+    ents['Text'] =  acronyms.fixAncronyms(ents['Text'])
     print(ents['Text'])
     debug.append(snomed.search(ents['Text']))
 a = snomed.search('weight gain')

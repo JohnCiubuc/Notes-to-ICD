@@ -16,22 +16,11 @@ if os.path.exists(database):
         ancronymList = pickle.load(handle)
         handle.close()
 
-
-def fixAncronyms(file):
-
-    if os.path.exists(file):
-        dataf = open(file, 'r+')
-        data = dataf.read()
-        dataf.seek(0)
-        for item in ancronymList:
-            reg = re.compile(re.escape(item), re.IGNORECASE)
-            data = reg.sub(ancronymList[item], data)
-        dataf.write(data)
-        dataf.truncate()
-        dataf.close()
-        print("Ancronyms Fixed")
-    else:
-        print("Warning, File not found:", file)
+def fixAncronyms(text):
+    for item in ancronymList:
+        reg = re.compile(re.escape(item), re.IGNORECASE)
+        text = reg.sub(ancronymList[item], text)
+    return text
 
 # don't forget to run this function after modifying it
 def createAncronymDatabase():
