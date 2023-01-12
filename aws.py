@@ -8,12 +8,6 @@ Created on Thu Jan 12 16:42:36 2023
 import boto3
 import os
 import configparser
-
-from pymedtermino import *
-from pymedtermino.snomedct import SNOMEDCT
-
-# a=SNOMEDCT.search('insomnia')
-
 config = configparser.ConfigParser()
 config.read(os.path.expanduser("~") + '/.aws/credentials')
 

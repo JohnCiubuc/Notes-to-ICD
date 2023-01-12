@@ -6,7 +6,8 @@ Created on Mon Jan 9 12:18:26 2023
 @author: John Ciubuc
 """
 import aws
-import re
+import snomed
+import acronyms
 import pickle
 
 #  ===============================
@@ -66,7 +67,6 @@ entity_sections = {}
 for entity in entities:
     begin_offset = entity['BeginOffset']
     for name,index in enumerate(note_section_indexes):
-        print(name)
         if begin_offset > index:
             continue
         else:
@@ -76,8 +76,11 @@ for entity in entities:
             else:
                 entity_sections[section_name] = [entity]
             break
-            
-            
-
+    
+debug = []
+for ents in entity_sections['Reason For Visit']:
+    print(ents['Text'])
+    debug.append(snomed.search(ents['Text']))
+a = snomed.search('weight gain')
 # for entity in a:
 #     print('Entity', entity)
