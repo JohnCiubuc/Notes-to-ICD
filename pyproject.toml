@@ -8,6 +8,7 @@ authors = ["John Ciubuc <john.ciubuc@ttuhsc.edu>"]
 python = "^3.10"
 numpy = "^1.24.1"
 pandas = "^1.5.2"
+PyMedTermino = "^0.3.3"
 
 [tool.poetry.dev-dependencies]
 

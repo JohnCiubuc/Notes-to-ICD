@@ -26,6 +26,14 @@ pytz = ">=2020.1"
 test = ["hypothesis (>=5.5.3)", "pytest (>=6.0)", "pytest-xdist (>=1.31)"]
 
 [[package]]
+name = "pymedtermino"
+version = "0.3.3"
+description = "Medical Terminologies for Python: SNOMED CT, ICD10, MedDRA, CDF, UMLS and VCM icons"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "python-dateutil"
 version = "2.8.2"
 description = "Extensions to the standard Python datetime module"
@@ -55,11 +63,12 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "6abec18732b47b577154ccd7c0dd3f50b94c6b9b3e43c7a0ce961a1651dac3ab"
+content-hash = "2ca82b63292b85df66bf5b8e5bd5b775eb108f15e36591f81a742b76cd41eb6f"
 
 [metadata.files]
 numpy = []
 pandas = []
+pymedtermino = []
 python-dateutil = []
 pytz = []
 six = []
