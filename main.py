@@ -18,6 +18,8 @@ DEBUG_USE_PICKLE = True
 #  ===============================
 #  ===============================
 
+ICD_CONFIDENCE = 0.65
+
 
 f = open('DID_Notes/DID1.txt')
 note = f.read()
@@ -54,7 +56,7 @@ if DEBUG_USE_PICKLE:
     entities  = response['Entities']
     file.close()
 else:
-    response = aws.detectEntities(note)
+    response = aws.detectICDs(note)
     entities  = response['Entities']
 
 # save to not abuse api while testing
@@ -62,7 +64,23 @@ file = open('aws_response.pkl', 'wb')
 pickle.dump(response, file)
 file.close()
 
+# Prune entities per confidence
+e_list_temp = []
+for e in entities:
+    #  Raw entity detection is valid
+    if e['Score'] > ICD_CONFIDENCE:
+        # Raw ICD code connection is valid
+        try:
+            if len(e['ICD10CMConcepts']) > 0:
+                if e['ICD10CMConcepts'][0]['Score'] > ICD_CONFIDENCE:
+                    e_list_temp.append(e)
+                    continue
+        except:
+            print('error')
+entities = e_list_temp
 entity_sections = {}
+
+
 # Reformat entities per section
 for entity in entities:
     begin_offset = entity['BeginOffset']

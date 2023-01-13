@@ -20,3 +20,6 @@ comp = boto3.client('comprehendmedical')
 
 def detectEntities(text):
     return comp.detect_entities(Text=text)
+
+def detectICDs(text):
+    return comp.infer_icd10_cm(Text=text)
