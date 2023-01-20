@@ -116,7 +116,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QListWidget" name="listWidget_LHAP"/>
+           <widget class="QListWidget" name="listWidget_LAP"/>
           </item>
          </layout>
         </widget>
@@ -149,7 +149,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="1" column="0">
-        <widget class="QPlainTextEdit" name="plainTextEdit_S1"/>
+        <widget class="QPlainTextEdit" name="plainTextEdit_Note"/>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label">
@@ -159,7 +159,7 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QPushButton" name="pushButton_machineNote">
+        <widget class="QPushButton" name="pushButton_extract">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -167,7 +167,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Convert to Machine Note</string>
+          <string>Extract ICD Codes</string>
          </property>
         </widget>
        </item>
