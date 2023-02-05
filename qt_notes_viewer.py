@@ -27,7 +27,9 @@ class Ui(QtWidgets.QMainWindow):
         note = Core.set_sections_on_clips(self.plainTextEdit_Note.toPlainText())
         note, note_section_indexes = Core.recombine_for_aws(self.note_sections)
         entities = Core.request_amazon(note);
-        entities_low, entities_high = Core.prune_entities_to_confidence(entities)
+        
+        debType = 'ICD'
+        entities_low, entities_high = Core.prune_entities_to_confidence(entities[debType])
         entity_sections = Core.reformat_entities_to_section(entities_high,note_section_indexes)
         
         self.listWidget_HHPI.clear()
@@ -35,19 +37,35 @@ class Ui(QtWidgets.QMainWindow):
         self.listWidget_LHPI.clear()
         self.listWidget_LAP.clear()
         print("\n\nObtained from HPI:")
-        for ents in entity_sections['Reason For Visit']:  
-            self.listWidget_HHPI.addItem(f"{ents['Text']} ({ents['ICD10CMConcepts'][0]['Description']}) - {ents['ICD10CMConcepts'][0]['Code']}")
-       
-        for ents in entity_sections['Assessment']:  
-            self.listWidget_HAP.addItem(f"{ents['Text']} ({ents['ICD10CMConcepts'][0]['Description']}) - {ents['ICD10CMConcepts'][0]['Code']}")
-      
-        entity_sections = Core.reformat_entities_to_section(entities_low,note_section_indexes)
-        print("\n\nObtained from HPI:")
-        for ents in entity_sections['Reason For Visit']:  
-            self.listWidget_LHPI.addItem(f"{ents['Text']} ({ents['ICD10CMConcepts'][0]['Description']}) - {ents['ICD10CMConcepts'][0]['Code']}")
-       
-        for ents in entity_sections['Assessment']:  
-            self.listWidget_LAP.addItem(f"{ents['Text']} ({ents['ICD10CMConcepts'][0]['Description']}) - {ents['ICD10CMConcepts'][0]['Code']}")
+        if debType == 'ENT':
+            for ents in entity_sections['Reason For Visit']:  
+                self.listWidget_HHPI.addItem(f"{ents['Text']} ({ents['ICD10CMConcepts'][0]['Description']}) - {ents['ICD10CMConcepts'][0]['Code']}")
+           
+            for ents in entity_sections['Assessment']:  
+                self.listWidget_HAP.addItem(f"{ents['Text']} ({ents['ICD10CMConcepts'][0]['Description']}) - {ents['ICD10CMConcepts'][0]['Code']}")
+          
+            entity_sections = Core.reformat_entities_to_section(entities_low,note_section_indexes)
+            print("\n\nObtained from HPI:")
+            for ents in entity_sections['Reason For Visit']:  
+                self.listWidget_LHPI.addItem(f"{ents['Text']} ({ents['ICD10CMConcepts'][0]['Description']}) - {ents['ICD10CMConcepts'][0]['Code']}")
+           
+            for ents in entity_sections['Assessment']:  
+                self.listWidget_LAP.addItem(f"{ents['Text']} ({ents['ICD10CMConcepts'][0]['Description']}) - {ents['ICD10CMConcepts'][0]['Code']}")
+        else:
+            for ents in entity_sections['Reason For Visit']:  
+                self.listWidget_HHPI.addItem(f"{ents['Text']} ")
+           
+            for ents in entity_sections['Assessment']:  
+                self.listWidget_HAP.addItem(f"{ents['Text']}")
+          
+            entity_sections = Core.reformat_entities_to_section(entities_low,note_section_indexes)
+            print("\n\nObtained from HPI:")
+            for ents in entity_sections['Reason For Visit']:  
+                self.listWidget_LHPI.addItem(f"{ents['Text']}")
+           
+            for ents in entity_sections['Assessment']:  
+                self.listWidget_LAP.addItem(f"{ents['Text']} ")
+            
   
           
 app = QtWidgets.QApplication(sys.argv) 
