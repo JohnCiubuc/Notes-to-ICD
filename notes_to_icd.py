@@ -13,12 +13,13 @@ import pickle
 #  ===============================
 #  ========== DEBUG ==============
 #  ===============================
-DEBUG_USE_PICKLE = False
+DEBUG_USE_PICKLE = True
 #  ===============================
 #  ===============================
 #  ===============================
 
 ICD_CONFIDENCE = 0.5
+ENT_CONFIDENCE = 0.5
 note = ''
 note_section_indexes = ''
 clip_sections = [('Reason For Visit', 'Review of Systems'), ('Assessment', 'END')]
@@ -63,19 +64,21 @@ def readNote_Debug():
 
     
 def request_amazon(note):
+    entities = {}
     # Request entities
     if DEBUG_USE_PICKLE:
         file = open('aws_response.pkl', 'rb')
-        response = pickle.load(file)
-        entities  = response['Entities']
+        entities = pickle.load(file)
         file.close()
     else:
         response = aws.detectICDs(note)
-        entities  = response['Entities']
+        entities['ICD']  = response['Entities']
+        response = aws.detectEntities(note)
+        entities['ENT']  = response['Entities']
 
     # save to not abuse api while testing
     file = open('aws_response.pkl', 'wb')
-    pickle.dump(response, file)
+    pickle.dump(entities, file)
     file.close()
     
     return entities
@@ -88,15 +91,25 @@ def prune_entities_to_confidence(entities):
         #  Raw entity detection is valid
         if e['Score'] > ICD_CONFIDENCE:
             # Raw ICD code connection is valid
-            try:
-                if len(e['ICD10CMConcepts']) > 0:
-                    if e['ICD10CMConcepts'][0]['Score'] > ICD_CONFIDENCE:
-                        e_list_high.append(e)
-                    else:
-                        e_list_low.append(e)
-                        continue
-            except:
-                print('error')
+            # This is an ICD code
+            if 'ICD10CMConcepts' in e:
+                try:  
+                    if len(e['ICD10CMConcepts']) > 0:
+                        if e['ICD10CMConcepts'][0]['Score'] > ICD_CONFIDENCE:
+                            e_list_high.append(e)
+                        else:
+                            e_list_low.append(e)
+                            continue
+                except:
+                    print('error')
+            # This is an entity
+            else:
+                if e['Score'] > ENT_CONFIDENCE:                            
+                    e_list_high.append(e)
+                else:
+                    e_list_low.append(e)
+                    continue
+                
     return e_list_low, e_list_high
 
 def reformat_entities_to_section(entities, note_section_indexes):
