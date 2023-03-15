@@ -36,7 +36,7 @@
        <item row="1" column="0">
         <widget class="QGroupBox" name="groupBox_3">
          <property name="title">
-          <string>High Confidence ICD Codes</string>
+          <string>Primary Section ICD Codes</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_5">
           <item row="0" column="0">
@@ -85,20 +85,20 @@
        <item row="2" column="0">
         <widget class="QGroupBox" name="groupBox_4">
          <property name="title">
-          <string>Low Confidence ICD Codes</string>
+          <string>Secondary Section ICD Codes</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="0" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>HPI</string>
+             <string>Review of Symptoms</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
            <widget class="QLabel" name="label_6">
             <property name="text">
-             <string>Assessment and Plan</string>
+             <string>Physical Exam</string>
             </property>
            </widget>
           </item>
@@ -182,7 +182,7 @@
      <x>0</x>
      <y>0</y>
      <width>1041</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

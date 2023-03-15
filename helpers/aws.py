@@ -18,8 +18,11 @@ boto3.Session(aws_access_key_id=config.get('default','aws_access_key_id') ,
 comp = boto3.client('comprehendmedical')
 
 
-def detectEntities(text):
+def detect_entities(text):
     return comp.detect_entities(Text=text)
 
-def detectICDs(text):
+def detect_icd(text):
     return comp.infer_icd10_cm(Text=text)
+
+def detect_snomed(text):
+    return comp.infer_snomedct(Text=text)

@@ -5,9 +5,7 @@ Created on Mon Jan 9 12:18:26 2023
 
 @author: John Ciubuc
 """
-import aws
-import snomed
-import acronyms
+from helpers import aws, snomed, acronyms
 import pickle
 
 #  ===============================
