@@ -59,7 +59,7 @@ def run():
         entity_sections = core.reformat_entities_to_section(entities_high,note_section_indexes)
     
         # note_sections[0]
-        entity_sections
+        # entity_sections
         # Create streamlit page
         
         # ICD Codes
@@ -81,8 +81,10 @@ def run():
                     
                 para = stf.generate_annotated_paragraph(note_sections[i], entity_list)
                 # Generate paragraph for this section
-                para = note_sections[i]
-                col1.write(para)
+                # para = note_sections[i]
+                # with col1:
+                # st.write(para)
+                annotated_text(*para)
 
                 
              

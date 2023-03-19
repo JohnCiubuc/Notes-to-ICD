@@ -152,12 +152,22 @@ def snomed_specificity_score(snomed_code):
 def snomed_code(snomed_term):
     try:
         concept = SNOMEDCT.search(snomed_term)
+        if len(concept) == 0:
+            try:
+                snomed_term = snomed_term.split(',')
+                print(snomed_term)
+                if len(snomed_term) == 1:
+                    return -1
+                concept = SNOMEDCT.search(snomed_term[0])
+            except:
+                return -1
     except:
         return -1
     try:
         return concept[0].code
     except:
         return -1
+
 # concept = SNOMEDCT[363169009] #  Inflammation of specific body organs (
 # concept = SNOMEDCT[74400008] #  Appendicitis (disorder)
 # concept = SNOMEDCT[302168000] #  Appendicitis (disorder)

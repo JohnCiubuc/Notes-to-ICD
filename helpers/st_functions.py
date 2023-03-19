@@ -13,13 +13,14 @@ import pandas as pd
 from modules import snomed
 from itertools import compress
 
-def replace_item(the_list):
-    for item in the_list:
-        if item == 'b':
-            yield 'd'
-            yield 'e'
-        else:
-            yield item
+# Taken from https://stackoverflow.com/a/50784012/19491646
+import matplotlib as mpl
+
+def color_fader(c1,c2,mix=0): #fade (linear interpolate) from color c1 (at mix=0) to c2 (mix=1)
+    c1=np.array(mpl.colors.to_rgb(c1))
+    c2=np.array(mpl.colors.to_rgb(c2))
+    return mpl.colors.to_hex((1-mix)*c1 + mix*c2)
+
 
 def _reconstitute_paragraph_gen(reconst_list, entity, score):
     """
@@ -52,7 +53,7 @@ def _reconstitute_paragraph_gen(reconst_list, entity, score):
             # Return pre-string
             yield split[0]
             for split_i in range(1,len(split)):
-                yield (entity, "0.543", "#8ef")
+                yield (entity, f'{score*100:.2f}', color_fader('red', 'green', score))
                 yield split[split_i]
         else:
             yield el
@@ -78,13 +79,15 @@ def generate_annotated_paragraph(note_section, entity_list):
     reconst = [note_section]
     for entity in entity_list:
         # Generate specificty score
-        snomed_code = snomed.snomed_code(entity)
+        snomed_code = snomed.snomed_code(list(entity.values())[0])
         if snomed_code != -1:
-            score = snomed.snomed_specificity_score()
+            score = snomed.snomed_specificity_score(snomed_code)
         else:
             score = 0
         
         # Split string
-        reconst = _reconstitute_paragraph(reconst, entity, score)
+        reconst = list(_reconstitute_paragraph_gen(reconst, list(entity.keys())[0], score))
+        print(reconst)
+        print('\n---\n')
 
     return reconst
