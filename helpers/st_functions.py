@@ -22,34 +22,32 @@ def generate_number_point_rubric(index, value=0):
     return num_inp
 
 
-def generate_tab_section_rubric(index, config, saver):
-    Entities = {}
-    Entities[config.SECTIONS[index]] = []
-    
-    config_section = config.SECTIONS[index]
+def generate_tab_section(index, tab_list, entity_sections):
 
     # Entities[config.SECTIONS[index]] ['Points'] = points
     
     # columns = st.columns([3,1])
     # st.write(Entities[config.SECTIONS[index]])
     st.write('##### Uncheck an item below to remove it from the Rubric')
-    for i,entity in enumerate(saver['Entity High'][config_section]):
-        # columns[0].write(entity['Text'])
-        # columns[1].checkbox('asdf',key=f'{config.SECTIONS[index]}-{i}')
-        Entities[config.SECTIONS[index]].append(entity)
-        Entities[config.SECTIONS[index]][-1]['enable'] = True
-        checked = st.checkbox(entity['Text'],key=f'{config.SECTIONS[index]}-{i}', value=True)
-        Entities[config.SECTIONS[index]][-1]['enable'] = checked
+    for ents in entity_sections[tab_list[index]]:  
+        st.write(f"{ents['Text']} ({ents['ICD10CMConcepts'][0]['Description']}) - {ents['ICD10CMConcepts'][0]['Code']}")
+    # for i,entity in enumerate(saver['Entity High'][config_section]):
+    #     # columns[0].write(entity['Text'])
+    #     # columns[1].checkbox('asdf',key=f'{config.SECTIONS[index]}-{i}')
+    #     Entities[config.SECTIONS[index]].append(entity)
+    #     Entities[config.SECTIONS[index]][-1]['enable'] = True
+    #     checked = st.checkbox(entity['Text'],key=f'{config.SECTIONS[index]}-{i}', value=True)
+    #     Entities[config.SECTIONS[index]][-1]['enable'] = checked
         
-        # Temp patch for rubric compatability
-        Entities[config.SECTIONS[index]][-1]['meldogramAttributes'] = {}
-        Entities[config.SECTIONS[index]][-1]['meldogramAttributes']['weight'] = 1
-        Entities[config.SECTIONS[index]][-1]['meldogramAttributes']['negated'] = 1
-        Entities[config.SECTIONS[index]][-1]['meldogramAttributes']['category'] = entity['Category']
+    #     # Temp patch for rubric compatability
+    #     Entities[config.SECTIONS[index]][-1]['meldogramAttributes'] = {}
+    #     Entities[config.SECTIONS[index]][-1]['meldogramAttributes']['weight'] = 1
+    #     Entities[config.SECTIONS[index]][-1]['meldogramAttributes']['negated'] = 1
+    #     Entities[config.SECTIONS[index]][-1]['meldogramAttributes']['category'] = entity['Category']
         
-    st.write("Missing an item? Some items are not accurately detected by the AI. If you are missing an item, please edit your rubric and re-run it as appropriate")
+    # st.write("Missing an item? Some items are not accurately detected by the AI. If you are missing an item, please edit your rubric and re-run it as appropriate")
     
-    return Entities
+    # return Entities
     
     
 @st.cache_data

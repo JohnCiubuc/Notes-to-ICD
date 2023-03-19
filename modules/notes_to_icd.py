@@ -5,7 +5,7 @@ Created on Mon Jan 9 12:18:26 2023
 
 @author: John Ciubuc
 """
-from . import aws, acronyms
+from modules import aws
 import pickle
 import re
 import streamlit as st
@@ -31,6 +31,7 @@ note_section_indexes = ''
 # Note format must be known in advanced.
 # Sections added in list rather than appending for processing later
     
+@st.cache_data
 def set_sections_on_clips(note, is_student_note = True):
     note_lower = note.lower()
     if not is_student_note:
@@ -53,7 +54,7 @@ def set_sections_on_clips(note, is_student_note = True):
 
 
 
-
+@st.cache_data
 def recombine_for_aws(note_sections):
     # Recombine sections for aws
     # Count each section size for processing
@@ -97,7 +98,7 @@ def recombine_for_aws(note_sections):
     return (note,note_section_indexes)
 
 
-
+@st.cache_data
 def readNote_Debug():
     f = open('DID_Notes/DID1.txt')
     note = f.read()
@@ -127,7 +128,7 @@ def request_amazon(note):
     # file.close()
     
     return entities
-
+@st.cache_data
 def prune_entities_to_confidence(entities):
     # Prune entities per confidence
     e_list_high = []
@@ -156,7 +157,7 @@ def prune_entities_to_confidence(entities):
                     continue
                 
     return e_list_low, e_list_high
-
+@st.cache_data
 def reformat_entities_to_section(entities, note_section_indexes):
     entity_sections = {}
     # Reformat entities per section
