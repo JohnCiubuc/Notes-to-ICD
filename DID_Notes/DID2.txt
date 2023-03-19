@@ -1,5 +1,5 @@
 
-History of Present lliness
+Reason for Visit
 
 Chuck is a kind and pleasant 74 y.o. M who is presenting for a general follow up appointment. His primary concern for the visit is learning more about the new COVID variants and in the case he tests positive, what the next steps should be (e.g., Paxlovid).
 
@@ -9,7 +9,8 @@ Patient describes his mood as "good" and is experiencing minor stress and anxiet
 
 Patient BP has improved and he has been compliant with his medications. Patient denies tobacco and drug use but drinks 2 oz. of bourbon every couple days.
 
-ROS negative for nausea/vomiting, fever, chills, shortness of breath, dysuria, hematuria, orthostatic changes, new skin lesions, and memory loss. Patient one episode of headache a couple months ago and an episode of epistaxis 3 weeks ago prompting him to stop his aspirin use (he resumed last week).
+Review of Systems:
+ negative for nausea/vomiting, fever, chills, shortness of breath, dysuria, hematuria, orthostatic changes, new skin lesions, and memory loss. Patient one episode of headache a couple months ago and an episode of epistaxis 3 weeks ago prompting him to stop his aspirin use (he resumed last week).
 
 Past Medical History
 - Basal cell carcinoma of skin (173.91) (C44.91)

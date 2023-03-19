@@ -41,10 +41,17 @@ complex_code_list = [99203,
                      99214,
                      99215]
 
+long_visit = [(60, 99205),
+              (40, 99215)]
+
+
 def generate_code_improvements(scores, score_texts, codes):
     score_z = zip(scores, score_texts, codes)
     score_z = sorted(score_z, key=lambda x: x[0])
     score_z = [x for x in score_z if x[0] != -1 and x[0] < 0.6]
+    if len(score_z) == 0:
+        st.markdown('This section was :blue[Exceptional]. We can not recommend any additional :green[code improvements] based on the note content submitted')
+        return
     st.markdown('Code complexity can be increased by being more specific. Room for improvement include:')
     for entity in score_z:
         reconst_list = [f'Instead of {entity[1]}, consider ']
@@ -85,6 +92,17 @@ def generate_office_visit(all_avg_scores):
                         if this is a new patient, or billing {complexity_wrap[c_level](complex_code_list[c_level+3])} 
                         if this is an existing patient visit
                         """)
+                        
+def generate_office_time_recommendation(rec_type):
+    match rec_type:
+        case 'HPI':
+            st_write_type_wrap[2](st, f"""The HPI section has a considerable amount of information in it. 
+                                  If you spent more than {long_visit[0][0]} minutes on a new patient, consider billing {complexity_wrap[2](long_visit[0][1])}.
+                                  If this is an established patient and you spent more than {long_visit[1][0]} minutes, consider billing {complexity_wrap[2](long_visit[1][1])}""")
+        case 'AP':
+            st_write_type_wrap[2](st, f"""The Assessment and Plan section has a considerable amount of complexity in it. 
+                                  Consider billing {complexity_wrap[2](long_visit[0][1])} for a new patient, or {complexity_wrap[2](long_visit[1][1])} for an established patient.""")
+    
 def run():
     # Session variables 
     if 'note_run' not in _st:
@@ -116,10 +134,11 @@ def run():
     
         note, note_sections = core.set_sections_on_clips(_st.note_data, False)
         note, note_section_indexes = core.recombine_for_aws(note_sections)
-        # entities = core.request_amazon(note);
-        file = open('aws_response.pkl', 'rb')
-        entities = pickle.load(file)
-        file.close()
+        with st.spinner('Running NLP...'):
+            entities = core.request_amazon(note);
+        # file = open('aws_response.pkl', 'rb')
+        # entities = pickle.load(file)
+        # file.close()
         
         debType = 'ENT'
         entities_low, entities_high = core.prune_entities_to_confidence(entities[debType])
@@ -185,6 +204,12 @@ def run():
             
         st.markdown('-----')
         generate_office_visit(all_avg_scores)
+        # Arbitrary number for a large HPI
+        if len(note_sections[0]) > 800:
+            generate_office_time_recommendation('HPI')
+        # Complicated AP
+        if all_avg_scores[3] > complex_thresholds[2]:
+            generate_office_time_recommendation('AP')
         st.markdown('-----')
         st.markdown('### Recommended Code Improvements:')
         Tabs = st.tabs(["💻 Reason For Visit", 
