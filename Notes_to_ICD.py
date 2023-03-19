@@ -14,6 +14,7 @@ st.set_page_config(
 
 from streamlit import session_state as _st
 from modules import notes_to_icd as core
+from modules import snomed
 from helpers import st_functions as stf
 from annotated_text import util as at_util
 import numpy as np
@@ -25,7 +26,7 @@ complex_list = ['Low',
                'Medium',
                'High']
 
-complexity_wrap = [lambda x : f':orange[{x}]',
+complexity_wrap = [lambda x : f' :orange[{x}]',
                    lambda x : f':blue[{x}]',
                    lambda x : f':green[{x}]']
 
@@ -48,9 +49,30 @@ def generate_code_improvements(scores, score_texts, codes):
     for entity in score_z:
         reconst_list = [f'Instead of {entity[1]}, consider ']
         reconst_list = list(stf.reconstitute_paragraph_gen(reconst_list, entity[1], entity[0]))
-        # complexity_wrap[2]()
-    st.write(score_z)
-        
+        try:
+            sno_ent = snomed.SNOMEDCT[entity[2]]
+            sno_desc = list(sno_ent.descendants_no_double())
+            if len(sno_desc) > 3:
+                sno_len = 3
+            else:
+                sno_len = len(sno_desc)
+            print('after 3')
+            for i in range(0,sno_len):
+                print(f'trying')
+                print(f'try:{sno_desc[i].term}')
+                reconst_list.append((sno_desc[i].term, '', '#800080'))
+                reconst_list.append(' and ')
+            reconst_list = reconst_list[:-1]
+            reconst_list.append('\n\n')
+            st.markdown(
+                at_util.get_annotated_html(*reconst_list),
+                unsafe_allow_html=True,
+            )
+            st.write('')
+        except:
+            print('whoops')
+       
+            
 
 def generate_office_visit(all_avg_scores):
     avg_score = np.average(all_avg_scores)
