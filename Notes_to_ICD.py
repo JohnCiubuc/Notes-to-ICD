@@ -73,7 +73,6 @@ def run():
         tab_list = ['Reason For Visit', 'Review of Systems', 'Physical Exam', 'Assessment']
         for i in range(0,len(Tabs)):
             with Tabs[i]:
-                col1, col2 = st.columns(2)
                 entity_list = []
                 col2_write_list = []
                 for ents in entity_sections[tab_list[i]]:  
@@ -89,7 +88,8 @@ def run():
                     complexity = ':blue[Medium]'
                 else:
                     complexity = ':orange[Low]'
-                st.info(f"Complexity for this section is: {complexity}")
+                st.info(f"Complexity for this section is: {complexity} (Score: {avg_score:0.2f})")
+                col1, col2 = st.columns(2)
                 # Generate paragraph for this section
                 # para = note_sections[i]
                 # with col1:
@@ -105,7 +105,9 @@ def run():
                     at_util.get_annotated_html(*para),
                     unsafe_allow_html=True,
                 )
-
+            
+        st.markdown('-----')
+        
                 
              
      
