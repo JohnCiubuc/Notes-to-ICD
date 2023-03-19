@@ -149,8 +149,15 @@ def snomed_specificity_score(snomed_code):
     snomed_children = snomed_depth(snomed_code)
     return len(snomed_hierarchy) / (len(snomed_children) + len(snomed_hierarchy))
 
-
-# concept = SNOMEDCT.search('appendicitis')
+def snomed_code(snomed_term):
+    try:
+        concept = SNOMEDCT.search(snomed_term)
+    except:
+        return -1
+    try:
+        return concept[0].code
+    except:
+        return -1
 # concept = SNOMEDCT[363169009] #  Inflammation of specific body organs (
 # concept = SNOMEDCT[74400008] #  Appendicitis (disorder)
 # concept = SNOMEDCT[302168000] #  Appendicitis (disorder)

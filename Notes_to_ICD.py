@@ -15,6 +15,7 @@ st.set_page_config(
 from streamlit import session_state as _st
 from modules import notes_to_icd as core
 from helpers import st_functions as stf
+from annotated_text import annotated_text
 import pickle
 
 def run():
@@ -58,7 +59,7 @@ def run():
         entity_sections = core.reformat_entities_to_section(entities_high,note_section_indexes)
     
         # note_sections[0]
-        # st.warning(' ·')
+        entity_sections
         # Create streamlit page
         
         # ICD Codes
@@ -67,18 +68,22 @@ def run():
                               "🗃 Review of Systems", 
                               "🧭 Physical Exam", 
                               "🗺️ Assessment and  Plan"])
+        
         tab_list = ['Reason For Visit', 'Review of Systems', 'Physical Exam', 'Assessment']
         for i in range(0,len(Tabs)):
             with Tabs[i]:
                 col1, col2 = st.columns(2)
-                # stf.generate_tab_section(i, tab_list, entity_sections)
-                
+                entity_list = []
                 for ents in entity_sections[tab_list[i]]:  
                     col2.write(f"{ents['Text']} ({ents['ICD10CMConcepts'][0]['Description']}) - {ents['ICD10CMConcepts'][0]['Code']}")
-                        
+                    # Save user terms and icd descriptions for tagging
+                    entity_list.append({ents['Text']: ents['ICD10CMConcepts'][0]['Description']})
+                    
+                para = stf.generate_annotated_paragraph(note_sections[i], entity_list)
                 # Generate paragraph for this section
                 para = note_sections[i]
                 col1.write(para)
+
                 
              
      
