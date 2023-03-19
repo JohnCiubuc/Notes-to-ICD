@@ -13,7 +13,15 @@ import pandas as pd
 from modules import snomed
 from itertools import compress
 
-def _reconstitute_paragraph(reconst_list, entity, score):
+def replace_item(the_list):
+    for item in the_list:
+        if item == 'b':
+            yield 'd'
+            yield 'e'
+        else:
+            yield item
+
+def _reconstitute_paragraph_gen(reconst_list, entity, score):
     """
     Takes a reconst list, finds an entity, replaces it with tuple for
     annotated_text extension
@@ -34,10 +42,20 @@ def _reconstitute_paragraph(reconst_list, entity, score):
 
     """
     
-    
-    
-    
-    return reconst_list
+    for el in reconst_list:
+        if type(el) == str:
+            split = el.split(entity)
+            # Failed split, entity does not exist
+            if len(split) == 0:
+                yield el
+            
+            # Return pre-string
+            yield split[0]
+            for split_i in range(1,len(split)):
+                yield (entity, "0.543", "#8ef")
+                yield split[split_i]
+        else:
+            yield el
 
 @st.cache_data
 def generate_annotated_paragraph(note_section, entity_list):
@@ -57,7 +75,7 @@ def generate_annotated_paragraph(note_section, entity_list):
         List for annotated_text.
 
     """
-    reconst = []
+    reconst = [note_section]
     for entity in entity_list:
         # Generate specificty score
         snomed_code = snomed.snomed_code(entity)
