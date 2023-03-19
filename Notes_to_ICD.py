@@ -57,17 +57,29 @@ def run():
         entities_low, entities_high = core.prune_entities_to_confidence(entities[debType])
         entity_sections = core.reformat_entities_to_section(entities_high,note_section_indexes)
     
-        # st.info('p4')
+        # note_sections[0]
+        # st.warning(' ·')
+        # Create streamlit page
+        
+        # ICD Codes
         tab_container = st.empty()
         Tabs = tab_container.tabs(["💻 Reason For Visit", 
                               "🗃 Review of Systems", 
                               "🧭 Physical Exam", 
                               "🗺️ Assessment and  Plan"])
-        entities_list = []
         tab_list = ['Reason For Visit', 'Review of Systems', 'Physical Exam', 'Assessment']
         for i in range(0,len(Tabs)):
             with Tabs[i]:
-                stf.generate_tab_section(i, tab_list, entity_sections)
+                col1, col2 = st.columns(2)
+                # stf.generate_tab_section(i, tab_list, entity_sections)
+                
+                for ents in entity_sections[tab_list[i]]:  
+                    col2.write(f"{ents['Text']} ({ents['ICD10CMConcepts'][0]['Description']}) - {ents['ICD10CMConcepts'][0]['Code']}")
+                        
+                # Generate paragraph for this section
+                para = note_sections[i]
+                col1.write(para)
+                
              
      
     
