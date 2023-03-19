@@ -53,7 +53,10 @@ def _reconstitute_paragraph_gen(reconst_list, entity, score):
             # Return pre-string
             yield split[0]
             for split_i in range(1,len(split)):
-                yield (entity, f'{score*100:.2f}', color_fader('red', 'green', score))
+                if score == -1:
+                    yield (entity, 'N/A', '#800080')
+                else:
+                    yield (entity, f'{score*100:.2f}', color_fader('red', 'green', score))
                 yield split[split_i]
         else:
             yield el
@@ -68,7 +71,7 @@ def generate_annotated_paragraph(note_section, entity_list):
     note_section : STR
         Full paragraph section.
     entity_list : LIST
-        Entity list from aws.
+        Entity list from aws. Contains dict of format: [str, list]
 
     Returns
     -------
@@ -77,17 +80,30 @@ def generate_annotated_paragraph(note_section, entity_list):
 
     """
     reconst = [note_section]
+    scores = []
+    print('\n\n')
+    # st.write(entity_list)
     for entity in entity_list:
         # Generate specificty score
-        snomed_code = snomed.snomed_code(list(entity.values())[0])
-        if snomed_code != -1:
-            score = snomed.snomed_specificity_score(snomed_code)
+        # Try ICD name first
+        for icd_value in entity[list(entity.keys())[0]]:
+            # st.write(icd_value)
+            snomed_code = snomed.snomed_code(icd_value['Description'])
+            if snomed_code != -1:
+                break
+        
+        # Try note text next[0]
+        if snomed_code == -1:
+            snomed_code = snomed.snomed_code(list(entity.keys())[0])
+        # Failed both
+        if snomed_code == -1:
+            score = -1
+        # Pass for both (what a weird cascade)
         else:
-            score = 0
+            score = snomed.snomed_specificity_score(snomed_code)
+        scores.append(score)
         
         # Split string
         reconst = list(_reconstitute_paragraph_gen(reconst, list(entity.keys())[0], score))
-        print(reconst)
-        print('\n---\n')
 
-    return reconst
+    return reconst, scores

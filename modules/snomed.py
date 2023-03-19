@@ -150,24 +150,61 @@ def snomed_specificity_score(snomed_code):
     return len(snomed_hierarchy) / (len(snomed_children) + len(snomed_hierarchy))
 
 def snomed_code(snomed_term):
+    """
+    Check if term is both in active usage, and has a valid code
+
+    Parameters
+    ----------
+    snomed_term : STR
+        Medical search term.
+
+    Returns
+    -------
+    INT
+        Code or -1.
+
+    """
     try:
         concept = SNOMEDCT.search(snomed_term)
-        if len(concept) == 0:
+        if len(concept) == 0 :
             try:
                 snomed_term = snomed_term.split(',')
-                print(snomed_term)
-                if len(snomed_term) == 1:
-                    return -1
-                concept = SNOMEDCT.search(snomed_term[0])
+                # for term in snomed_term:
+                code = SNOMEDCT.search(snomed_term)[0]
+                if code != -1:
+                    return code
             except:
                 return -1
+        else:
+            for entity in concept:
+                if entity.is_in_core == 0:
+                    continue
+                
+                if entity.code != -1:
+                    return entity.code
+            return -1
     except:
         return -1
     try:
-        return concept[0].code
+        if concept[0].is_in_core == 1:
+            return concept[0].code
+        else:
+            return -1
     except:
         return -1
-
+    return -1
+    
+# concept = SNOMEDCT.search('Benign enlargement of prostate')
+# print(len(concept))
+# concept = SNOMEDCT.search('Insomnia')
+# print(len(concept))
+# concept = SNOMEDCT.search('Inadequate sleep hygiene')
+# print(len(concept))
+# print(snomed_specificity_score(61059009))
+# concept = SNOMEDCT.search(61059009)
+print(snomed_code('COVID-19'))
+print(snomed_code('coronavirus'))
+print(snomed_code('Disease caused by severe acute respiratory syndrome'))
 # concept = SNOMEDCT[363169009] #  Inflammation of specific body organs (
 # concept = SNOMEDCT[74400008] #  Appendicitis (disorder)
 # concept = SNOMEDCT[302168000] #  Appendicitis (disorder)

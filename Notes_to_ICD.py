@@ -15,7 +15,8 @@ st.set_page_config(
 from streamlit import session_state as _st
 from modules import notes_to_icd as core
 from helpers import st_functions as stf
-from annotated_text import annotated_text
+from annotated_text import util as at_util
+import numpy as np
 import pickle
 
 def run():
@@ -74,17 +75,36 @@ def run():
             with Tabs[i]:
                 col1, col2 = st.columns(2)
                 entity_list = []
+                col2_write_list = []
                 for ents in entity_sections[tab_list[i]]:  
-                    col2.write(f"{ents['Text']} ({ents['ICD10CMConcepts'][0]['Description']}) - {ents['ICD10CMConcepts'][0]['Code']}")
-                    # Save user terms and icd descriptions for tagging
-                    entity_list.append({ents['Text']: ents['ICD10CMConcepts'][0]['Description']})
+                    col2_write_list.append(f"{ents['Text']} ({ents['ICD10CMConcepts'][0]['Description']}) - {ents['ICD10CMConcepts'][0]['Code']}")
+                    entity_list.append({ents['Text']: ents['ICD10CMConcepts']})
                     
-                para = stf.generate_annotated_paragraph(note_sections[i], entity_list)
+                para, scores = stf.generate_annotated_paragraph(note_sections[i], entity_list)
+                avg_score = np.average([x for x in scores if x != -1])
+                
+                if avg_score > 0.85:
+                    complexity = ':green[High]'
+                elif avg_score > 0.6:
+                    complexity = ':blue[Medium]'
+                else:
+                    complexity = ':orange[Low]'
+                st.info(f"Complexity for this section is: {complexity}")
                 # Generate paragraph for this section
                 # para = note_sections[i]
                 # with col1:
                 # st.write(para)
-                annotated_text(*para)
+                for i,w in enumerate(col2_write_list):
+                    if scores[i] > 0.85:
+                        col2.info(w)
+                    elif scores[i] > 0.6:
+                        col2.warning(w)
+                    else:
+                        col2.error(w)
+                col1.markdown(
+                    at_util.get_annotated_html(*para),
+                    unsafe_allow_html=True,
+                )
 
                 
              
