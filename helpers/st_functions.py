@@ -22,7 +22,7 @@ def color_fader(c1,c2,mix=0): #fade (linear interpolate) from color c1 (at mix=0
     return mpl.colors.to_hex((1-mix)*c1 + mix*c2)
 
 
-def _reconstitute_paragraph_gen(reconst_list, entity, score):
+def reconstitute_paragraph_gen(reconst_list, entity, score):
     """
     Takes a reconst list, finds an entity, replaces it with tuple for
     annotated_text extension
@@ -77,10 +77,16 @@ def generate_annotated_paragraph(note_section, entity_list):
     -------
     reconst : LIST
         List for annotated_text.
+    scores : TYPE
+        DESCRIPTION.
+    texts : TYPE
+        DESCRIPTION.
 
     """
     reconst = [note_section]
     scores = []
+    texts = []
+    codes = []
     print('\n\n')
     # st.write(entity_list)
     for entity in entity_list:
@@ -101,9 +107,13 @@ def generate_annotated_paragraph(note_section, entity_list):
         # Pass for both (what a weird cascade)
         else:
             score = snomed.snomed_specificity_score(snomed_code)
+            
+        # Yeah i know i should collapse this all into one var
         scores.append(score)
+        texts.append(list(entity.keys())[0])
+        codes.append(snomed_code)
         
         # Split string
-        reconst = list(_reconstitute_paragraph_gen(reconst, list(entity.keys())[0], score))
+        reconst = list(reconstitute_paragraph_gen(reconst, list(entity.keys())[0], score))
 
-    return reconst, scores
+    return reconst, scores, texts, codes

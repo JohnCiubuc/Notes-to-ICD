@@ -40,7 +40,29 @@ complex_code_list = [99203,
                      99214,
                      99215]
 
+def generate_code_improvements(scores, score_texts, codes):
+    score_z = zip(scores, score_texts, codes)
+    score_z = sorted(score_z, key=lambda x: x[0])
+    score_z = [x for x in score_z if x[0] != -1 and x[0] < 0.6]
+    st.markdown('Code complexity can be increased by being more specific. Room for improvement include:')
+    for entity in score_z:
+        reconst_list = [f'Instead of {entity[1]}, consider ']
+        reconst_list = list(stf.reconstitute_paragraph_gen(reconst_list, entity[1], entity[0]))
+        # complexity_wrap[2]()
+    st.write(score_z)
+        
 
+def generate_office_visit(all_avg_scores):
+    avg_score = np.average(all_avg_scores)
+    # get note complexity
+    c_level = bisect.bisect(complex_thresholds, avg_score) - 1
+    # Generate suggestions
+    complexity = complexity_wrap[c_level](complex_list[c_level])
+    st_write_type_wrap[c_level](st, f'The average complexity of this note is {complexity} (Score: {avg_score:.2f})')
+    st_write_type_wrap[c_level](st, f"""Recommend billing {complexity_wrap[c_level](complex_code_list[c_level])} 
+                        if this is a new patient, or billing {complexity_wrap[c_level](complex_code_list[c_level+3])} 
+                        if this is an existing patient visit
+                        """)
 def run():
     # Session variables 
     if 'note_run' not in _st:
@@ -94,6 +116,10 @@ def run():
         
         tab_list = ['Reason For Visit', 'Review of Systems', 'Physical Exam', 'Assessment']
         all_avg_scores = []
+        scores_sections = []
+        score_texts_sections = []
+        codes_sections = []
+
         for i in range(0,len(Tabs)):
             with Tabs[i]:
                 entity_list = []
@@ -102,9 +128,14 @@ def run():
                     col2_write_list.append(f"{ents['Text']} ({ents['ICD10CMConcepts'][0]['Description']}) - {ents['ICD10CMConcepts'][0]['Code']}")
                     entity_list.append({ents['Text']: ents['ICD10CMConcepts']})
                     
-                para, scores = stf.generate_annotated_paragraph(note_sections[i], entity_list)
+                para, scores, score_texts, codes = stf.generate_annotated_paragraph(note_sections[i], entity_list)
                 avg_score = np.average([x for x in scores if x != -1])
+                
+                # saving for out of loop
                 all_avg_scores.append(avg_score)
+                scores_sections.append(scores)
+                score_texts_sections.append(score_texts)
+                codes_sections.append(codes)
                 
                 # Complexity string for user
                 c_level = bisect.bisect(complex_thresholds, avg_score) - 1 
@@ -112,6 +143,10 @@ def run():
                     
                 st.info(f"Complexity for this section is: {complexity} (Score: {avg_score:0.2f})")
                 col1, col2 = st.columns(2)
+                col1.markdown("### Note Section")
+                # col1.markdown("-----")
+                col2.markdown("### ICD-10 Codes")
+                # col2.markdown("-----")
                 # Generate paragraph for this section
                 # para = note_sections[i]
                 # with col1:
@@ -127,16 +162,19 @@ def run():
                 )
             
         st.markdown('-----')
-        avg_score = np.average(all_avg_scores)
-        # get note complexity
-        c_level = bisect.bisect(complex_thresholds, avg_score) - 1
-        # Generate suggestions
-        complexity = complexity_wrap[c_level](complex_list[c_level])
-        st_write_type_wrap[c_level](st, f'The average complexity of this note is {complexity} (Score: {avg_score:.2f})')
-        st_write_type_wrap[c_level](st, f"""Recommend billing {complexity_wrap[c_level](complex_code_list[c_level])} 
-                            if this is a new patient, or billing {complexity_wrap[c_level](complex_code_list[c_level+3])} 
-                            if this is an existing patient visit
-                            """)
+        generate_office_visit(all_avg_scores)
+        st.markdown('-----')
+        st.markdown('### Recommended Code Improvements:')
+        Tabs = st.tabs(["💻 Reason For Visit", 
+                              "🗃 Review of Systems", 
+                              "🧭 Physical Exam", 
+                              "🗺️ Assessment and  Plan"])
+        for i in range(0,len(Tabs)):
+            with Tabs[i]:
+                generate_code_improvements(scores_sections[i], 
+                                           score_texts_sections[i],
+                                           codes_sections[i])
+        
             
     
 if __name__ == "__main__":

@@ -16,3 +16,6 @@ for i in a:
 
 complex_thresholds = [0,0.6,0.85]
 a= bisect.bisect(complex_thresholds, 0.8)
+a = [1,2,3]
+b = ['a','b','c']
+d = zip(a,b)
