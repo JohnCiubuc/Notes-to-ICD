@@ -18,6 +18,28 @@ from helpers import st_functions as stf
 from annotated_text import util as at_util
 import numpy as np
 import pickle
+import bisect
+
+complex_thresholds = [0,0.6,0.85]
+complex_list = ['Low',
+               'Medium',
+               'High']
+
+complexity_wrap = [lambda x : f':orange[{x}]',
+                   lambda x : f':blue[{x}]',
+                   lambda x : f':green[{x}]']
+
+st_write_type_wrap = [lambda a, x : a.error(x), 
+              lambda a, x : a.warning(x), 
+              lambda a, x : a.info(x)]
+
+complex_code_list = [99203,
+                     99204,
+                     99205,
+                     99213,
+                     99214,
+                     99215]
+
 
 def run():
     # Session variables 
@@ -71,6 +93,7 @@ def run():
                               "🗺️ Assessment and  Plan"])
         
         tab_list = ['Reason For Visit', 'Review of Systems', 'Physical Exam', 'Assessment']
+        all_avg_scores = []
         for i in range(0,len(Tabs)):
             with Tabs[i]:
                 entity_list = []
@@ -81,13 +104,12 @@ def run():
                     
                 para, scores = stf.generate_annotated_paragraph(note_sections[i], entity_list)
                 avg_score = np.average([x for x in scores if x != -1])
+                all_avg_scores.append(avg_score)
                 
-                if avg_score > 0.85:
-                    complexity = ':green[High]'
-                elif avg_score > 0.6:
-                    complexity = ':blue[Medium]'
-                else:
-                    complexity = ':orange[Low]'
+                # Complexity string for user
+                c_level = bisect.bisect(complex_thresholds, avg_score) - 1 
+                complexity = complexity_wrap[c_level](complex_list[c_level])
+                    
                 st.info(f"Complexity for this section is: {complexity} (Score: {avg_score:0.2f})")
                 col1, col2 = st.columns(2)
                 # Generate paragraph for this section
@@ -95,28 +117,27 @@ def run():
                 # with col1:
                 # st.write(para)
                 for i,w in enumerate(col2_write_list):
-                    if scores[i] > 0.85:
-                        col2.info(w)
-                    elif scores[i] > 0.6:
-                        col2.warning(w)
-                    else:
-                        col2.error(w)
+                    c_level = bisect.bisect(complex_thresholds, scores[i]) - 1 
+                    st_write_type_wrap[c_level](col2, w)
+                    
+                # Write annotated html    
                 col1.markdown(
                     at_util.get_annotated_html(*para),
                     unsafe_allow_html=True,
                 )
             
         st.markdown('-----')
-        
-                
-             
-     
-    
-    
-    
-    
-    
-    
+        avg_score = np.average(all_avg_scores)
+        # get note complexity
+        c_level = bisect.bisect(complex_thresholds, avg_score) - 1
+        # Generate suggestions
+        complexity = complexity_wrap[c_level](complex_list[c_level])
+        st_write_type_wrap[c_level](st, f'The average complexity of this note is {complexity} (Score: {avg_score:.2f})')
+        st_write_type_wrap[c_level](st, f"""Recommend billing {complexity_wrap[c_level](complex_code_list[c_level])} 
+                            if this is a new patient, or billing {complexity_wrap[c_level](complex_code_list[c_level+3])} 
+                            if this is an existing patient visit
+                            """)
+            
     
 if __name__ == "__main__":
     run()
