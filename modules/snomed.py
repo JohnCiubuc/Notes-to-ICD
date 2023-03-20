@@ -194,7 +194,7 @@ def snomed_code(snomed_term):
         return -1
     return -1
     
-# concept = SNOMEDCT.search('Benign enlargement of prostate')
+concept = SNOMEDCT.search('Benign enlargement of prostate')
 # print(len(concept))
 # concept = SNOMEDCT.search('Insomnia')
 # print(len(concept))

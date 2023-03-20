@@ -44,6 +44,15 @@ complex_code_list = [99203,
 long_visit = [(60, 99205),
               (40, 99215)]
 
+def _max_width_(prcnt_width:int = 75):
+    max_width_str = f"max-width: {prcnt_width}%!;"
+    st.markdown(f""" 
+                <style> 
+                .reportview-container .css-91z34k .main .block-container{{{max_width_str}}}
+                </style>    
+                """, 
+                unsafe_allow_html=True,
+    )
 
 def generate_code_improvements(scores, score_texts, codes):
     score_z = zip(scores, score_texts, codes)
@@ -63,11 +72,9 @@ def generate_code_improvements(scores, score_texts, codes):
                 sno_len = 3
             else:
                 sno_len = len(sno_desc)
-            print('after 3')
             for i in range(0,sno_len):
-                print(f'trying')
-                print(f'try:{sno_desc[i].term}')
-                reconst_list.append((sno_desc[i].term, '', '#800080'))
+                score = snomed.snomed_specificity_score(sno_desc[i].code)
+                reconst_list.append( (sno_desc[i].term, f'{score*100:.2f}', stf.color_fader('red', 'green', score)))
                 reconst_list.append(' and ')
             reconst_list = reconst_list[:-1]
             reconst_list.append('\n\n')
@@ -104,6 +111,7 @@ def generate_office_time_recommendation(rec_type):
                                   Consider billing {complexity_wrap[2](long_visit[0][1])} for a new patient, or {complexity_wrap[2](long_visit[1][1])} for an established patient.""")
     
 def run():
+    _max_width_()
     # Session variables 
     if 'note_run' not in _st:
         _st.note_run = False
